@@ -8,6 +8,8 @@ typedef void OnError(Exception exception);
 const kUrl = "http://stream.kalx.berkeley.edu:8000/kalx-256.mp3";
 const kUrl2 = "http://stream.kalx.berkeley.edu:8000/kalx-256.mp3";
 
+const BUTTON_COLOR = Colors.tealAccent;
+
 void main() {
   runApp(new MaterialApp(home: new Scaffold(body: new AudioApp())));
 }
@@ -93,55 +95,93 @@ class _AudioAppState extends State<AudioApp> {
     setState(() => playerState = PlayerState.stopped);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return new Center(
-        child: new Material(
-            elevation: 2.0,
-            color: Colors.grey[200],
-            child: new Center(
-              child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    new Material(child: _buildPlayer()),
-                  ]),
-            )));
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('KALX TRUE TRUE'),
+          backgroundColor: Colors.black,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.list),
+              onPressed: () {
+//                _select(choices[0]);      //https://flutter.dev/docs/catalog/samples/basic-app-bar
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.attach_money),
+              onPressed: () {
+//                _select(choices[1]);
+              },
+            ),
+//            PopupMenuButton<Choice>(
+//              onSelected: _select,
+//              itemBuilder: (BuildContext context) {
+//                return choices.skip(2).map((Choice choice) {
+//                  return PopupMenuItem<Choice>(
+//                    value: choice,
+//                    child: Text(choice.title),
+//                  );
+//                }).toList();
+//              },
+//            ),
+          ],
+        ),
+          body: DecoratedBox(
+              position: DecorationPosition.background,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                image: DecorationImage(
+                    image: AssetImage('assets/images/kalxkimmiekat.png'),
+                    fit: BoxFit.fill),
+              ),
+              child: Card( //new Material(
+                  elevation: 0,
+                  color: Colors.transparent,
+                    child: new Center(
+                      child: new Column(
+  //                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                        mainAxisSize: MainAxisSize.min,
+  //                        crossAxisAlignment: CrossAxisAlignment.center,
+  //                        mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            new Card(child: _buildPlayer()),
+                          ]),
+                    ),
+              )
+          )
+      ),
+    );
   }
 
-  Widget _buildPlayer() => new Container(
-      padding: new EdgeInsets.all(16.0),
-      child: new Column(mainAxisSize: MainAxisSize.min, children: [
+  Widget _buildPlayer() => new Card(
+      child: new Column( children: [
         new Row(mainAxisSize: MainAxisSize.min, children: [
           new IconButton(
               onPressed: isPlaying ? null : () => play(),
               iconSize: 64.0,
               icon: new Icon(Icons.play_arrow),
-              color: Colors.cyan),
+              color: BUTTON_COLOR),
           new IconButton(
               onPressed: isPlaying ? () => pause() : null,
               iconSize: 64.0,
               icon: new Icon(Icons.pause),
-              color: Colors.cyan),
+              color: BUTTON_COLOR),
           new IconButton(
               onPressed: isPlaying || isPaused ? () => stop() : null,
               iconSize: 64.0,
               icon: new Icon(Icons.stop),
-              color: Colors.cyan),
+              color: BUTTON_COLOR),
+          new IconButton(                               //make this one button
+              onPressed: () => mute(true),
+              icon: new Icon(Icons.headset_off),
+              color: BUTTON_COLOR),
+          new IconButton(
+              onPressed: () => mute(false),
+              icon: new Icon(Icons.headset),
+              color: BUTTON_COLOR),
         ]),
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new IconButton(
-                onPressed: () => mute(true),
-                icon: new Icon(Icons.headset_off),
-                color: Colors.cyan),
-            new IconButton(
-                onPressed: () => mute(false),
-                icon: new Icon(Icons.headset),
-                color: Colors.cyan),
-          ],
-        ),
       ]));
 }
