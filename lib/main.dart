@@ -32,7 +32,7 @@ class _AudioAppState extends State<AudioApp> {
   get isPlaying => playerState == PlayerState.playing;
   get isPaused => playerState == PlayerState.paused;
 
-  bool isMuted = false;
+  bool isMuted = true;
 
   StreamSubscription _audioPlayerStateSubscription;
 
@@ -84,10 +84,17 @@ class _AudioAppState extends State<AudioApp> {
     });
   }
 
-  Future mute(bool muted) async {
-    await audioPlayer.mute(muted);
+//  Future mute(bool muted) async {
+//    await audioPlayer.mute(muted);
+//    setState(() {
+//      isMuted = muted;
+//    });
+//  }
+
+  Future mute() async {
+    await audioPlayer.mute(isMuted);
     setState(() {
-      isMuted = muted;
+      isMuted = !isMuted;
     });
   }
 
@@ -175,12 +182,8 @@ class _AudioAppState extends State<AudioApp> {
               icon: new Icon(Icons.stop),
               color: BUTTON_COLOR),
           new IconButton(                               //make this one button
-              onPressed: () => mute(true),
-              icon: new Icon(Icons.headset_off),
-              color: BUTTON_COLOR),
-          new IconButton(
-              onPressed: () => mute(false),
-              icon: new Icon(Icons.headset),
+              onPressed: () => mute(),
+              icon: new Icon(isMuted ? Icons.headset: Icons.headset_off),
               color: BUTTON_COLOR),
         ]),
       ]));
