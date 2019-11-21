@@ -1,6 +1,3 @@
-# audioplayer_example
-
-a audio player plugin example
 
 ## Getting Started
 
